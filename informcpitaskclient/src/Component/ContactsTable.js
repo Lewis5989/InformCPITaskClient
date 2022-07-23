@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import './ContactsTable.css';
 import React from 'react';
-import { GetContactsForUser, AddOrUpdateContact } from '../Service/ContactsService';
+import { GetContactsForUser, AddOrUpdateContact, DeleteContactForUser } from '../Service/ContactsService';
 
 export class ContactsTable extends Component {
     
@@ -83,7 +83,7 @@ export class ContactsTable extends Component {
         })
     }
     deleteContact(contact){
-
+        DeleteContactForUser(contact);
     }
     async saveContact(event){
         console.log(this.state)
