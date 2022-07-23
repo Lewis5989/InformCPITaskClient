@@ -52,9 +52,9 @@ export class ContactsTable extends Component {
                 </thead>
                 <tbody>
                         <tr>
-                            <th><input id="inputContactName" onChange={e=> this.setState({inputContactName: e.target.value})}/></th>
-                            <th><input id="inputEmail"onChange={e=>this.setState({inputEmail: e.target.value})}/></th>
-                            <th><input id="inputPhoneNumber" onChange={e=>this.setState({inputPhoneNumber: e.target.value})}/></th>
+                            <th><input value={this.state.inputContactName} onChange={e=> this.setState({inputContactName: e.target.value})}/></th>
+                            <th><input value={this.state.inputEmail}onChange={e=>this.setState({inputEmail: e.target.value})}/></th>
+                            <th><input value={this.state.inputPhoneNumber} onChange={e=>this.setState({inputPhoneNumber: e.target.value})}/></th>
                             <th>
                                 <button onClick={()=>this.saveContact()}>Save</button>
                             </th>
@@ -65,8 +65,8 @@ export class ContactsTable extends Component {
                             <th>{contact.email}</th>
                             <th>{contact.phoneNumber}</th>
                             <th>
-                                <button onClick={this.editContact(contact)}>Edit </button>
-                                <button onClick={this.deleteContact(contact)}>Delete </button>
+                                <button onClick={()=>this.editContact(contact)}>Edit </button>
+                                <button onClick={()=>this.deleteContact(contact)}>Delete </button>
                             </th>
                         </tr>
                     )}
@@ -75,7 +75,12 @@ export class ContactsTable extends Component {
         );  
     }
     editContact(contact){
-
+        this.setState({
+            inputId: contact.id, 
+            inputContactName:contact.contactName,
+            inputEmail:contact.email,
+            inputPhoneNumber:contact.phoneNumber
+        })
     }
     deleteContact(contact){
 
