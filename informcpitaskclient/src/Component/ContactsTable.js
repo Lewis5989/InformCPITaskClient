@@ -17,9 +17,9 @@ export class ContactsTable extends Component {
             inputEmail:"",
             inputPhoneNumber: "",
         }        
-        this.userId = 1;
+        
     }
-
+    userId = 1;
     render(){
         let content = this.state.loading ? <div>loading..</div>: this.renderContactsTable(this.state.contacts);
         return (
@@ -31,8 +31,13 @@ export class ContactsTable extends Component {
     };
 
     async loadContactData(userId){
-        let data = await GetContactsForUser(userId);
-        this.setState({ contacts: data, loading: false });
+        try{
+            let data = await GetContactsForUser(userId);
+            this.setState({ contacts: data, loading: false });
+        }
+        catch(err){
+            console.log(err)
+        }
     };   
 
     componentDidMount(){
@@ -82,11 +87,18 @@ export class ContactsTable extends Component {
             inputPhoneNumber:contact.phoneNumber
         })
     }
-    deleteContact(contact){
-        DeleteContactForUser(contact);
+    async deleteContact(contact){
+        
+        try{
+            DeleteContactForUser(contact);
+            await this.loadContactData(this.userId);
+            this.render()
+        }
+        catch(err){
+            console.log(err)
+        }
     }
     async saveContact(event){
-        console.log(this.state)
         let contact = {
             id: this.state.inputId,
             userId: this.userId,
@@ -94,8 +106,14 @@ export class ContactsTable extends Component {
             email: this.state.inputEmail,
             phoneNumber: this.state.inputPhoneNumber
         }
-        console.log(contact)
-        await AddOrUpdateContact(contact); 
+        try{
+            await AddOrUpdateContact(contact);
+            this.render();
+        }
+        catch(err){
+            console.log(err)
+        }
+        
     }
 }
 
