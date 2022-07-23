@@ -24,6 +24,15 @@ export async function AddOrUpdateContact(contact){
 
     }
 }
+export async function DeleteContactForUser(contact){
+    var response = await fetch('https://localhost:7213/api/contacts/', {
+        method: 'DELETE', 
+        mode: 'cors', 
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(contact)
+    })
+    return await response.json();
+}
 
 
 
