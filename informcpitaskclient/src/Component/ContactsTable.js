@@ -1,13 +1,23 @@
 import { Component } from 'react';
 import './ContactsTable.css';
 import React from 'react';
-import { GetContactsForUser } from '../Service/ContactsService';
+import { GetContactsForUser, AddOrUpdateContact } from '../Service/ContactsService';
 
 export class ContactsTable extends Component {
-    userId = 1;
+    
     constructor(props) {
+
         super(props);
-        this.state = { contacts: [], loading: true };
+
+        this.state = { 
+            contacts: [], 
+            loading: true ,
+            inputId : 0,
+            inputContactName:"",
+            inputEmail:"",
+            inputPhoneNumber: "",
+        }        
+        this.userId = 1;
     }
 
     render(){
@@ -37,23 +47,53 @@ export class ContactsTable extends Component {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone Number</th>
-                        <th> </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {contacts.map(contact =>  
                         <tr>
+                            <th><input id="inputContactName" onChange={e=> this.setState({inputContactName: e.target.value})}/></th>
+                            <th><input id="inputEmail"onChange={e=>this.setState({inputEmail: e.target.value})}/></th>
+                            <th><input id="inputPhoneNumber" onChange={e=>this.setState({inputPhoneNumber: e.target.value})}/></th>
+                            <th>
+                                <button onClick={()=>this.saveContact()}>Save</button>
+                            </th>
+                        </tr>
+                    {contacts.map(contact =>  
+                        <tr key = {contact.id}>
                             <th>{contact.contactName}</th>
                             <th>{contact.email}</th>
                             <th>{contact.phoneNumber}</th>
-                            <th> </th>
+                            <th>
+                                <button onClick={this.editContact(contact)}>Edit </button>
+                                <button onClick={this.deleteContact(contact)}>Delete </button>
+                            </th>
                         </tr>
                     )}
                 </tbody>
             </table>
         );  
     }
+    editContact(contact){
+
+    }
+    deleteContact(contact){
+
+    }
+    async saveContact(event){
+        console.log(this.state)
+        let contact = {
+            id: this.state.inputId,
+            userId: this.userId,
+            contactName: this.state.inputContactName,
+            email: this.state.inputEmail,
+            phoneNumber: this.state.inputPhoneNumber
+        }
+        console.log(contact)
+        await AddOrUpdateContact(contact); 
+    }
 }
+
 
 
 
