@@ -90,9 +90,9 @@ export class ContactsTable extends Component {
     async deleteContact(contact){
         
         try{
-            DeleteContactForUser(contact);
-            await this.loadContactData(this.userId);
-            this.render()
+            await DeleteContactForUser(contact);
+            this.setState({loading: true})
+            this.loadContactData(this.userId);
         }
         catch(err){
             console.log(err)
@@ -108,7 +108,15 @@ export class ContactsTable extends Component {
         }
         try{
             await AddOrUpdateContact(contact);
-            this.render();
+            this.setState({
+                loading: true,
+                inputId : 0,
+                inputContactName:"",
+                inputEmail:"",
+                inputPhoneNumber: ""
+                });
+            this.loadContactData(this.userId);
+
         }
         catch(err){
             console.log(err)

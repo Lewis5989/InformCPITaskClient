@@ -5,7 +5,6 @@ export async function GetContactsForUser(userId){
 
 export async function AddOrUpdateContact(contact){
     if(contact.userId != null && contact.id != null){
-        console.log(contact)
         if(contact.id < 1){
             var response = await fetch('https://localhost:7213/api/contacts/', {
                 method: 'POST', 
