@@ -5,6 +5,7 @@ export async function GetContactsForUser(userId){
 
 export async function AddOrUpdateContact(contact){
     if(contact.userId != null && contact.id != null){
+        console.log(contact)
         if(contact.id < 1){
             var response = await fetch('https://localhost:7213/api/contacts/', {
                 method: 'POST', 
@@ -12,15 +13,15 @@ export async function AddOrUpdateContact(contact){
                 mode: 'cors', 
                 body: JSON.stringify(contact)
             })
-            return await response.json();
+            return await response.status;
         }
-        response = await fetch('https://localhost:7213/api/contacts/', {
+        var response = await fetch('https://localhost:7213/api/contacts/', {
             method: 'Put', 
             mode: 'cors', 
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify(contact)
         })
-        return await response.json();
+        return await response.status;
 
     }
 }
@@ -31,7 +32,7 @@ export async function DeleteContactForUser(contact){
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify(contact)
     })
-    return await response.json();
+    return await response.status;
 }
 
 
