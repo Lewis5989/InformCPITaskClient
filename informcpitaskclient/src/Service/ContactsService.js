@@ -1,5 +1,5 @@
 export async function GetContactsForUser(userId){
-    return fetch('https://localhost:7213/api/contacts/'+ userId).then((response) => response.json())
+    return fetch('https://localhost:7213/api/contacts?userid='+ userId).then((response) => response.json())
 }
 
 export async function AddOrUpdateContact(contact){
