@@ -16,6 +16,7 @@ export class ContactsTable extends Component {
             inputContactName:"",
             inputEmail:"",
             inputPhoneNumber: "",
+            errorMessage: ""
         }        
         
     }
@@ -30,13 +31,14 @@ export class ContactsTable extends Component {
         );
     };
 
-    async loadContactData(userId){
-        try{
-            let data = await GetContactsForUser(userId);
-            this.setState({ contacts: data, loading: false });
+    async loadContactData(userId) {
+        try {
+            GetContactsForUser(userId).then((data) => {
+                this.setState({ contacts: data, loading: false });
+            });
         }
         catch(err){
-            console.log(err)
+            this.setState({ errorMessage: err});
         }
     };   
 
@@ -46,6 +48,7 @@ export class ContactsTable extends Component {
     
     renderContactsTable(contacts){
         return(
+         <div>  {this.state.errorMessage && <div>{this.state.errorMessage}</div>}
             <table>
                 <thead>
                     <tr>
@@ -76,7 +79,7 @@ export class ContactsTable extends Component {
                         </tr>
                     )}
                 </tbody>
-            </table>
+            </table></div> 
         );  
     }
     editContact(contact){
@@ -90,12 +93,15 @@ export class ContactsTable extends Component {
     async deleteContact(contact){
         
         try{
-            await DeleteContactForUser(contact);
             this.setState({loading: true})
-            this.loadContactData(this.userId);
+
+            await DeleteContactForUser(contact).then(() => {
+                this.loadContactData(this.userId);
+                this.setState({loading: false})
+            });
         }
         catch(err){
-            console.log(err)
+            this.setState({ errorMessage: err});
         }
     }
     async saveContact(event){
@@ -107,19 +113,20 @@ export class ContactsTable extends Component {
             phoneNumber: this.state.inputPhoneNumber
         }
         try{
-            await AddOrUpdateContact(contact);
-            this.setState({
-                loading: true,
-                inputId : 0,
-                inputContactName:"",
-                inputEmail:"",
-                inputPhoneNumber: ""
-                });
-            this.loadContactData(this.userId);
+            AddOrUpdateContact(contact).then(() => {
+                this.setState({
+                    loading: true,
+                    inputId : 0,
+                    inputContactName:"",
+                    inputEmail:"",
+                    inputPhoneNumber: ""
+                    });
+                this.loadContactData(this.userId);
+            });
 
         }
         catch(err){
-            console.log(err)
+            this.setState({ errorMessage: err});
         }
         
     }
